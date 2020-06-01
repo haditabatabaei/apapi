@@ -6,6 +6,17 @@ router.get('/', (req, res, next) => {
     res.redirect('docs', 302);
 });
 
+router.get('/status/:code', (req, res, next) => {
+    if(!isNaN(req.params.code)) {
+        res.status(req.params.code).end();
+    } else {
+        res.status(404).end();
+    }
+});
+
+router.get('/tests/follow/:followUrl', (req, res, next) => {
+    res.redirect(302, req.params.followUrl);
+})
 
 router.get('/docs', (req, res, next) => {
     let docs = `
