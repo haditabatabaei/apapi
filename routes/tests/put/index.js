@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const upload = multer({dest: '/uploads/'});
+const bodyParser = require('body-parser');
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', upload.any(), (req, res, next) => {
+    console.log(req.body);
     if(!isNaN(req.params.id)) {
         res.status(200).send({
             'message': `Item with id ${req.params.id} edited.`,

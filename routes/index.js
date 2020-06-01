@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
+    console.log(req.headers);
     res.redirect('docs', 302);
 });
 
@@ -78,21 +79,15 @@ router.get('/docs', (req, res, next) => {
                </tr>
 <tr>
                 <td>DELETE</td>
-                <td>/tests/delete</td>
-                <td>Tests delete method</td>
-                <td>Returns simple data</td>
-               </tr>
-<tr>
-                <td>DELETE</td>
                 <td>/tests/delete/:id</td>
                 <td>Tests delete method on request param id</td>
-                <td>Returns 404 if :id is not a number</td>
+                <td>Returns 404 if :id is not a number | Success : 204 No Content | Body : null</td>
                </tr>
 <tr>
                 <td>PUT</td>
                 <td>/tests/put/:id</td>
-                <td>Tests put method on request param id</td>
-                <td>Returns 404 if :id is not a number</td>
+                <td>Tests put method on request param id | for body use multipart/form-data content type</td>
+                <td>Returns 404 if :id is not a number | Success : {"message":"Item with id 10 edited.","new":{"name":"hadi"}}</td>
                </tr>
 <tr>
                 <td>PATCH</td>

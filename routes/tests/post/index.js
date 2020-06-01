@@ -4,7 +4,7 @@ const multer = require('multer');
 const upload = multer({dest: '/uploads/'});
 const bodyParser = require('body-parser');
 
-router.post('/', upload.none(), (req, res, next) => {
+router.post('/', upload.any(), (req, res, next) => {
     console.log(req.body);
     console.log(req.files);
     console.log(req.headers);
