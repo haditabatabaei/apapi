@@ -15,7 +15,7 @@ router.get('/status/:code', (req, res, next) => {
 });
 
 router.get('/tests/follow/:followUrl', (req, res, next) => {
-    res.redirect(302, req.params.followUrl);
+    res.redirect(`http://${req.params.followUrl}`);
 })
 
 router.get('/docs', (req, res, next) => {
