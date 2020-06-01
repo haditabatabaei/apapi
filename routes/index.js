@@ -93,7 +93,7 @@ router.get('/docs', (req, res, next) => {
                 <td>PATCH</td>
                 <td>/tests/patch/:id</td>
                 <td>Tests patch method on request param id</td>
-                <td>Returns 404 if :id is not a number</td>
+                <td>Returns 404 if :id is not a number | Success : {"message":"Item with id 10 patched.","new":{"name":"hadi"}}</td>
                </tr>
             </table>
         </body>
