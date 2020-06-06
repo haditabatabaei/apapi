@@ -7,9 +7,14 @@ const postTestsRouter = require('./routes/tests/post/index');
 const deleteTestsRouter = require('./routes/tests/delete/index');
 const putTestsRouter = require('./routes/tests/put/index');
 const patchTestsRouter = require('./routes/tests/patch/index');
+const path = require('path')
+const fs = require('fs');
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 
+// setup the logger
 const app = express();
-app.use(logger('dev'));
+app.use(logger('combined', { stream: accessLogStream }))
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
