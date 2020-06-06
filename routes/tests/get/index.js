@@ -4,14 +4,14 @@ const Jimp = require('jimp');
 
 router.get('/status/:code', (req, res, next) => {
     if (!isNaN(Number(req.params.code))) {
-        res.status(Number(Number(req.params.code))).send();
+        res.status(Number(req.params.code)).send();
     } else {
         res.status(404).send();
     }
 });
 
 router.get('/html', (req, res, next) => {
-    res.header("Content-Type", "text/html").send(`<html><body><h1>${req.query.title}</h1><br><p>${req.query.text}</p></body></html>`)
+    res.header("Content-Type", "text/html").send(`<html><body><h1 style="color:${req.query.titlecolor}">${req.query.title}</h1><br><p style="color:${req.query.textcolor}">${req.query.text}</p></body></html>`)
 });
 
 router.get('/json', (req, res, next) => {
@@ -19,7 +19,7 @@ router.get('/json', (req, res, next) => {
         "status": "ok",
         "message": `Thank you ${Math.floor(Math.random() * 1000)} times!. :)`,
         "query": req.query,
-        "reqHeaders": req.headers
+        "requestHeaders": req.headers
     });
 });
 

@@ -4,19 +4,24 @@ const multer = require('multer');
 const upload = multer({dest: '/uploads/'});
 const bodyParser = require('body-parser');
 
-router.post('/', upload.any(), (req, res, next) => {
-    console.log(req.body);
-    console.log(req.files);
-    console.log(req.headers);
-    let contentType = req.headers['content-type'] || req.headers['Content-Type'];
-    if(!contentType) {
-      res.status(400).send("No content-type header provided")
-    } else if (contentType === 'application/x-www-form-urlencoded') {
-        res.status(200).header("X-requests-content-type", contentType).send("Post body with x-www-form-urlencoded received." + JSON.stringify(req.body));
-    } else if (contentType.startsWith("multipart/form-data")) {
-        res.status(200).header("X-requests-content-type", contentType).send("Post body with multipart/form-data received");
-    } else if(contentType === 'application/json'){
-        res.status(200).header("X-requests-content-type", contentType).send("Post body with application/json \r\n" + JSON.stringify(req.body))
+router.post('/urlencoded', (req, res, next) => {
+    if(req.headers['content-type'] === "application/x-www-form-urlencoded") {
+        res.status(200).send(`Item created with new data = ${JSON.stringify(req.body)}`)
+    } else {
+        res.status(400).send(`Bad request content type. content type must be application/x-www-form-urlencoded but its ${req.headers['content-type']}`)
+    }
+});
+
+router.post('/json', (req, res, next) => {
+    if(req.headers['content-type'] === "application/json") {
+        res.status(200).json({
+            'message': `Item created.`,
+            'new': req.body
+        })
+    } else {
+        res.status(400).json({
+            'message': `Bad request content type. content type must be application/json but its ${req.headers['content-type']}`
+        })
     }
 });
 
@@ -24,11 +29,19 @@ router.post('/formdata', upload.any(), (req, res, next) => {
     console.log('files:', req.files);
     console.log('body:', req.body);
     console.log('headers:', req.headers);
-    res.status(200).send(JSON.stringify(req.files) + "\r\n" + JSON.stringify(req.body));
+    if(req.headers['content-type'] && req.headers['content-type'].startsWith('multipart/form-data')) {
+        res.status(200).send(JSON.stringify(req.files) + "\r\n" + JSON.stringify(req.body));
+    } else {
+        res.status(400).send(`Bad request content type. content type must be multipart/form-data but its ${req.headers['content-type']}`)
+    }
 });
 
-router.post('/binary', bodyParser.raw({type: '*/*'}), (req, res, next) => {
+router.post('/binary', bodyParser.raw({type: 'application/octet-stream'}), (req, res, next) => {
     console.log(req.body);
-    res.send('Binary Data Received.');
+    if (req.headers['content-type'] === "application/octet-stream") {
+        res.send(`Binary data received. SIZE = ${req.body.length}`);
+    } else {
+        res.status(400).send(`Bad request content type. content type must be application/octet-stream but its ${req.headers['content-type']}`)
+    }
 })
 module.exports = router;
