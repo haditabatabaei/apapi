@@ -39,7 +39,7 @@ router.post('/formdata', upload.any(), (req, res, next) => {
 router.post('/binary', bodyParser.raw({type: 'application/octet-stream'}), (req, res, next) => {
     console.log(req.body);
     if (req.headers['content-type'] === "application/octet-stream") {
-        res.send(`Binary data received. SIZE = ${req.body.length}`);
+        res.send(req.body);
     } else {
         res.status(400).send(`Bad request content type. content type must be application/octet-stream but its ${req.headers['content-type']}`)
     }
